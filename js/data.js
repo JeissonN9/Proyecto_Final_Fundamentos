@@ -167,13 +167,13 @@ function inicializarProductos() {
                 "compatibilidad": "Kenworth T800"
             },
             {
-                "nombre": "Sensor de Oxígeno",
-                "categoria": "Sensores",
-                "imagen": "sensor_oxigeno.png",
+                "nombre": "Culata chevrolet Spark GT",
+                "categoria": "Motor",
+                "imagen": "culata_chevrolet_spark_gt.png",
                 "codigo": "LMn88t751",
-                "precio": 338539,
-                "marca": "Monroe",
-                "compatibilidad": "Nissan Versa"
+                "precio": 43697859,
+                "marca": "Chevrolet",
+                "compatibilidad": "Chevrolet Spark GT"
             },
             {
                 "nombre": "Radiador Aluminio",
