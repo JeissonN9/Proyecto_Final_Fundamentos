@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Producto - Taller de Vehículos</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Taller de Vehículos</h1>
+    <nav class="navegacion-principal">
+      <a href="index.html" class="nav-link">Inicio</a>
+      <a href="registro.html" class="nav-link">Registrar Producto</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Buscar Productos</h1>
+    <div id="filtros">
+      <input type="text" id="filtro-nombre" placeholder="Buscar por nombre...">
+      <select id="filtro-categoria">
+        <option value="">Todas las categorías</option>
+        <option value="Motor">Motor</option>
+        <option value="Frenos">Frenos</option>
+        <option value="Suspensión">Suspensión</option>
+        <option value="Eléctrico">Eléctrico</option>
+        <option value="Transmisión">Transmisión</option>
+      </select>
+      <button id="buscar">Buscar</button>
+    </div>
+    <div id="resultados-busqueda"></div>
+  </main>
+  <script src="../js/data.js"></script>
+  <script src="../js/buscar.js"></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Registrar Producto - Taller de Vehículos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Taller de Vehículos</h1>
+      <nav class="navegacion-principal">
+        <a href="index.html" class="nav-link">Inicio</a>
+        <a href="buscar.html" class="nav-link">Buscar Producto</a>
+      </nav>
+    </header>
+    <main class="registro-container">
+      <div class="formulario">
+        <h1>Registro de Nuevo Producto</h1>
+        <form id="form-registro">
+          <input
+            type="text"
+            placeholder="Nombre del producto"
+            id="nombre"
+            maxlength="20"
+            required
+          />
+          <select id="categoria">
+            <option value="">Seleccione categoría</option>
+            <option value="Motor">Motor</option>
+            <option value="Frenos">Frenos</option>
+            <option value="Suspensión">Suspensión</option>
+            <option value="Eléctrico">Eléctrico</option>
+            <option value="Transmisión">Transmisión</option>
+            <option value="LLantas">Llantas</option>
+            <option value="Lubricación">Lubricación</option>
+            <option value="Electronico">Electronico</option>
+            <option value="Espejos">Espejos</option>
+            <option value="Cristales">Cristales</option>
+
+          </select>
+          <select id="imagen">
+            <option value="">Seleccione imagen</option>
+            <option value="bateria.png" data-preview="../img/bateria.png">Batería</option>
+            <option value="bujia.png" data-preview="../img/bujia.png">Bujía</option>
+            <option value="filtroaceite.png" data-preview="img/filtroaceite.png">Filtro de Aceite</option>
+            <option value="pastillasfreno.png" data-preview="img/pastillasfreno.png">Pastillas de Freno</option>
+            <option value="amortiguador.png" data-preview="img/amortiguador.png">Amortiguador</option>
+            <option value="alternador.png" data-preview="img/alternador.png">Alternador</option>
+            <option value="radiador.png" data-preview="img/radiador.png">Radiador</option>
+            <option value="correa.png" data-preview="img/correa.png">Correa</option>
+            <option value="sensoroxigeno.png" data-preview="img/sensoroxigeno.png">Sensor de Oxígeno</option>
+            <option value="bombillo.png" data-preview="img/bombillo.png">Bombillo</option>
+          </select>
+          <input
+            type="text"
+            id="codigo"
+            placeholder="Código del producto"
+            required
+          />
+          <input
+            type="number"
+            id="precio"
+            placeholder="Precio en pesos"
+            required
+          />
+          <input type="text" id="marca" placeholder="Marca" />
+          <input type="text" id="compatibilidad" placeholder="Compatibilidad" />
+          <div class="botones">
+            <button type="submit">Registrar</button>
+            <button type="reset">Limpiar</button>
+          </div>
+        </form>
+      </div>
+    </main>
+    <script src="../js/data.js"></script>
+    <script src="../js/registro.js"></script>
+  </body>
+</html>

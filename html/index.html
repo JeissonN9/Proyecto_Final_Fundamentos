@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taller de Vehículos - Productos</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Taller de Vehículos</h1>
+      <nav class="navegacion-principal">
+        <a href="./index.html" class="nav-link">Inicio</a>
+        <a href="./registro.html" class="nav-link">Registrar Producto</a>
+        <a href="./buscar.html" class="nav-link">Buscar Producto</a>
+        <a href="./indicaciones.html" class="nav-link">Indicaciones</a>
+      </nav>
+    </header>
+
+    <main id="productos-container">
+      <h2>Listado de Productos</h2>
+      <div id="productos-lista" class="grid-productos"></div>
+      <div class="paginacion">
+        <button id="anterior">Anterior</button>
+        <span id="pagina-actual">Página 1</span>
+        <button id="siguiente">Siguiente</button>
+      </div>
+    </main>
+
+    <script src="../js/data.js"></script>
+    <script src="../js/productos.js"></script>
+  </body>
+</html>
