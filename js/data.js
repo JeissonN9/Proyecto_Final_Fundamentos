@@ -176,13 +176,13 @@ function inicializarProductos() {
                 "compatibilidad": "Chevrolet Spark GT"
             },
             {
-                "nombre": "Radiador Aluminio",
-                "categoria": "Motor",
-                "imagen": "radiador.png",
+                "nombre": "Guardapolvo delantero",
+                "categoria": "Accesorios",
+                "imagen": "guardapolvo_delantero.png",
                 "codigo": "abc66u965",
-                "precio": 93939,
-                "marca": "Valeo",
-                "compatibilidad": "Toyota Hilux"
+                "precio": 268999,
+                "marca": "Renault",
+                "compatibilidad": "Renault Duster"
             },
             {
                 "nombre": "Batería 12V",
