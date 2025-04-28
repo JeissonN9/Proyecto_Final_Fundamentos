@@ -444,6 +444,60 @@ function inicializarProductos() {
                 "precio": 214930,
                 "marca": "NGK",
                 "compatibilidad": "Volkswagen Jetta"
+            },
+            {
+                "nombre": "Kit de Embrague",
+                "categoria": "Transmisión",
+                "imagen": "kit_embrague.png",
+                "codigo": "rst99y823",
+                "precio": 785430,
+                "marca": "LUK",
+                "compatibilidad": "Toyota Corolla"
+            },
+            {
+                "nombre": "Bomba de Agua",
+                "categoria": "Refrigeración",
+                "imagen": "bomba_agua.png",
+                "codigo": "abc77z145",
+                "precio": 345890,
+                "marca": "SKF",
+                "compatibilidad": "Honda CR-V"
+            },
+            {
+                "nombre": "Termostato",
+                "categoria": "Refrigeración",
+                "imagen": "termostato.png",
+                "codigo": "pqr55k789",
+                "precio": 128900,
+                "marca": "Gates",
+                "compatibilidad": "Chevrolet Cruze"
+            },
+            {
+                "nombre": "Bobina de Encendido",
+                "categoria": "Encendido",
+                "imagen": "bobina.png",
+                "codigo": "lmn33d456",
+                "precio": 245670,
+                "marca": "Denso",
+                "compatibilidad": "Volkswagen Golf"
+            },
+            {
+                "nombre": "Válvula EGR",
+                "categoria": "Motor",
+                "imagen": "valvula_egr.png",
+                "codigo": "xyz88m321",
+                "precio": 398750,
+                "marca": "Delphi",
+                "compatibilidad": "Ford Focus"
+            },
+            {
+                "nombre": "Catalizador",
+                "categoria": "Escape",
+                "imagen": "catalizador.png",
+                "codigo": "abc44n987",
+                "precio": 892340,
+                "marca": "Walker",
+                "compatibilidad": "Mazda 3"
             }
         ];
 
