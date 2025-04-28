@@ -169,9 +169,9 @@ function inicializarProductos() {
             {
                 "nombre": "Culata chevrolet Spark GT",
                 "categoria": "Motor",
-                "imagen": "culata_chevrolet_spark_gt.png",
+                "imagen": "culata_chevrolet_sparkgt.png",
                 "codigo": "LMn88t751",
-                "precio": 43697859,
+                "precio": 4369789,
                 "marca": "Chevrolet",
                 "compatibilidad": "Chevrolet Spark GT"
             },
