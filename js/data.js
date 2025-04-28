@@ -167,7 +167,7 @@ function inicializarProductos() {
                 "compatibilidad": "Kenworth T800"
             },
             {
-                "nombre": "Culata chevrolet Spark GT",
+                "nombre": "Culata Chevrolet Spark GT",
                 "categoria": "Motor",
                 "imagen": "culata_chevrolet_sparkgt.png",
                 "codigo": "LMn88t751",
