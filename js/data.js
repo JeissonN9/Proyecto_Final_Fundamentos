@@ -475,10 +475,10 @@ function inicializarProductos() {
             {
                 "nombre": "Bobina de Encendido",
                 "categoria": "Encendido",
-                "imagen": "bobina.png",
+                "imagen": "bobina_encendido.png",
                 "codigo": "lmn33d456",
                 "precio": 245670,
-                "marca": "Denso",
+                "marca": "ACDelco",
                 "compatibilidad": "Volkswagen Golf"
             },
             {
@@ -496,8 +496,8 @@ function inicializarProductos() {
                 "imagen": "catalizador.png",
                 "codigo": "abc44n987",
                 "precio": 892340,
-                "marca": "Walker",
-                "compatibilidad": "Mazda 3"
+                "marca": "XuGuang",
+                "compatibilidad": "BYD"
             }
         ];
 
