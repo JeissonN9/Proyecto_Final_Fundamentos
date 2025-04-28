@@ -140,31 +140,31 @@ function inicializarProductos() {
                 "compatibilidad": "Mazda CX-5"
             },
             {
-                "nombre": "Correa de Distribución",
-                "categoria": "Motor",
-                "imagen": "correa.png",
-                "codigo": "abc68q470",
-                "precio": 432026,
-                "marca": "Valeo",
-                "compatibilidad": "Renault Duster"
-            },
-            {
-                "nombre": "Alternador",
+                "nombre": "Fusible de 32 Vcc 10 A",
                 "categoria": "Eléctrico",
-                "imagen": "alternador.png",
-                "codigo": "rst88r689",
-                "precio": 53752,
-                "marca": "Castrol",
-                "compatibilidad": "Chevrolet Aveo"
+                "imagen": "fusible_32v_rojo.png",
+                "codigo": "abc68q470",
+                "precio": 17235,
+                "marca": "Steren",
+                "compatibilidad": "Generico"
             },
             {
-                "nombre": "Bujía de Encendido",
-                "categoria": "Encendido",
-                "imagen": "bujia.png",
+                "nombre": "Inyector de Combustible",
+                "categoria": "Motor",
+                "imagen": "inyector_combustible.png",
+                "codigo": "rst88r689",
+                "precio": 364982,
+                "marca": "KIA",
+                "compatibilidad": "KIA RIO"
+            },
+            {
+                "nombre": "intercooler",
+                "categoria": "Motor",
+                "imagen": "intercooler.png",
                 "codigo": "rst10s987",
-                "precio": 57923,
-                "marca": "Valeo",
-                "compatibilidad": "Toyota Hilux"
+                "precio": 3258022,
+                "marca": "Kenworth",
+                "compatibilidad": "Kenworth T800"
             },
             {
                 "nombre": "Sensor de Oxígeno",
