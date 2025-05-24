@@ -1,35 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Buscar Producto - Taller de Vehículos</title>
-  <link rel="stylesheet" href="../css/styles.css">
+    <meta charset="UTF-8">
+    <title>Buscador de Productos - Taller de Vehículos</title>
+    <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Taller de Vehículos</h1>
-    <nav class="navegacion-principal">
-      <a href="index.html" class="nav-link">Inicio</a>
-      <a href="registro.html" class="nav-link">Registrar Producto</a>
-    </nav>
-  </header>
-  <main>
-    <h1>Buscar Productos</h1>
-    <div id="filtros">
-      <input type="text" id="filtro-nombre" placeholder="Buscar por nombre...">
-      <select id="filtro-categoria">
-        <option value="">Todas las categorías</option>
-        <option value="Motor">Motor</option>
-        <option value="Frenos">Frenos</option>
-        <option value="Suspensión">Suspensión</option>
-        <option value="Eléctrico">Eléctrico</option>
-        <option value="Transmisión">Transmisión</option>
-      </select>
-      <button id="buscar">Buscar</button>
-    </div>
-    <div id="resultados-busqueda"></div>
-  </main>
-  <script src="../js/data.js"></script>
-  <script src="../js/buscar.js"></script>
+    <header>
+        <h1>Buscador de Productos</h1>
+        <nav class="navegacion-principal">
+            <a href="index.html" class="nav-link">Regresar a Productos</a>
+        </nav>
+    </header>
+    <main>
+        <section id="filtros" class="filtros-container">
+            <div class="filtro-grupo">
+                <label for="filtro-nombre">Nombre del Producto:</label>
+                <input type="text" id="filtro-nombre" placeholder="Buscar por nombre...">
+            </div>
+            <div class="filtro-grupo">
+                <label for="filtro-categoria">Categoría:</label>
+                <select id="filtro-categoria">
+                    <option value="">Todas las categorías</option>
+                    <option value="Motor">Motor</option>
+                    <option value="Frenos">Frenos</option>
+                    <option value="Suspensión">Suspensión</option>
+                    <option value="Eléctrico">Eléctrico</option>
+                </select>
+            </div>
+            <div class="filtro-grupo">
+                <label for="filtro-precio">Precio máximo:</label>
+                <input type="number" id="filtro-precio" placeholder="Precio máximo...">
+            </div>
+            <div class="filtro-grupo">
+                <label for="filtro-marca">Marca:</label>
+                <input type="text" id="filtro-marca" placeholder="Buscar por marca...">
+            </div>
+            <div class="botones-filtro">
+                <button id="buscar">Buscar</button>
+                <button id="limpiar-filtros">Limpiar Filtros</button>
+            </div>
+        </section>
+
+        <section id="resultados">
+            <div id="total-resultados"></div>
+            <table id="tabla-resultados">
+                <thead>
+                    <tr>
+                        <th>Imagen</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Marca</th>
+                        <th>Compatibilidad</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="paginacion">
+                <button id="anterior">Anterior</button>
+                <span id="pagina-actual">Página 1</span>
+                <button id="siguiente">Siguiente</button>
+            </div>
+        </section>
+    </main>
+    <script src="../js/data.js"></script>
+    <script src="../js/buscar.js"></script>
 </body>
 </html>

@@ -6,40 +6,109 @@ document.getElementById('buscar').addEventListener('click', () => {
         // Realizar la búsqueda
         const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
         const categoria = document.getElementById('filtro-categoria').value;
+        const precioMax = document.getElementById('filtro-precio').value;
+        const marca = document.getElementById('filtro-marca').value.toLowerCase();
         
-        const productos = JSON.parse(localStorage.getItem('productos')) || [];
-        const resultados = productos.filter(producto => {
-            return (nombre === '' || producto.nombre.toLowerCase().includes(nombre)) &&
-                   (categoria === '' || producto.categoria === categoria);
+        const productos = obtenerProductos();
+        resultadosActuales = productos.filter(producto => {
+            return (!nombre || producto.nombre.toLowerCase().includes(nombre)) &&
+                   (!categoria || producto.categoria === categoria) &&
+                   (!precioMax || producto.precio <= parseFloat(precioMax)) &&
+                   (!marca || producto.marca.toLowerCase().includes(marca));
         });
-
-        mostrarResultados(resultados);
+        
+        document.getElementById('total-resultados').textContent = 
+            `Se encontraron ${resultadosActuales.length} productos`;
+        
+        paginaActual = 1;
+        mostrarResultados();
     }, 2000);
 });
 
-function mostrarResultados(resultados) {
-    const resultadosDiv = document.getElementById('resultados-busqueda');
-    resultadosDiv.innerHTML = '';
-    
-    if (resultados.length === 0) {
-        resultadosDiv.innerHTML = '<p>No se encontraron productos</p>';
-        return;
-    }
+let paginaActual = 1;
+const resultadosPorPagina = 10;
+let resultadosActuales = [];
 
-    resultadosDiv.className = 'grid-productos';
+document.addEventListener('DOMContentLoaded', () => {
+    const btnBuscar = document.getElementById('buscar');
+    const btnLimpiar = document.getElementById('limpiar-filtros');
     
-    resultados.forEach(producto => {
-        const card = document.createElement('div');
-        card.className = 'producto-card';
-        card.innerHTML = `
-            <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}">
-            <h3>${producto.nombre}</h3>
-            <p>Categoría: ${producto.categoria}</p>
-            <p>Precio: $${producto.precio.toLocaleString()}</p>
-            <p>Marca: ${producto.marca}</p>
-            <p>Compatibilidad: ${producto.compatibilidad}</p>
-            <p>Código: ${producto.codigo}</p>
-        `;
-        resultadosDiv.appendChild(card);
+    btnBuscar.addEventListener('click', realizarBusqueda);
+    btnLimpiar.addEventListener('click', limpiarFiltros);
+    
+    document.getElementById('anterior').addEventListener('click', () => cambiarPagina(-1));
+    document.getElementById('siguiente').addEventListener('click', () => cambiarPagina(1));
+});
+
+function realizarBusqueda() {
+    const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
+    const categoria = document.getElementById('filtro-categoria').value;
+    const precioMax = document.getElementById('filtro-precio').value;
+    const marca = document.getElementById('filtro-marca').value.toLowerCase();
+    
+    const productos = obtenerProductos();
+    resultadosActuales = productos.filter(producto => {
+        return (!nombre || producto.nombre.toLowerCase().includes(nombre)) &&
+               (!categoria || producto.categoria === categoria) &&
+               (!precioMax || producto.precio <= parseFloat(precioMax)) &&
+               (!marca || producto.marca.toLowerCase().includes(marca));
     });
+    
+    document.getElementById('total-resultados').textContent = 
+        `Se encontraron ${resultadosActuales.length} productos`;
+    
+    paginaActual = 1;
+    mostrarResultados();
+}
+
+function mostrarResultados() {
+    const inicio = (paginaActual - 1) * resultadosPorPagina;
+    const fin = inicio + resultadosPorPagina;
+    const productosPagina = resultadosActuales.slice(inicio, fin);
+    
+    const tbody = document.querySelector('#tabla-resultados tbody');
+    tbody.innerHTML = '';
+    
+    productosPagina.forEach(producto => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><img src="../assets/img/${producto.imagen}" alt="${producto.nombre}" class="tabla-imagen"></td>
+            <td>${producto.nombre}</td>
+            <td>${producto.categoria}</td>
+            <td>$${producto.precio.toLocaleString()}</td>
+            <td>${producto.marca}</td>
+            <td>${producto.compatibilidad}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+    
+    actualizarPaginacion();
+}
+
+function limpiarFiltros() {
+    document.getElementById('filtro-nombre').value = '';
+    document.getElementById('filtro-categoria').value = '';
+    document.getElementById('filtro-precio').value = '';
+    document.getElementById('filtro-marca').value = '';
+    document.getElementById('total-resultados').textContent = '';
+    document.querySelector('#tabla-resultados tbody').innerHTML = '';
+}
+
+function cambiarPagina(direccion) {
+    const totalPaginas = Math.ceil(resultadosActuales.length / resultadosPorPagina);
+    const nuevaPagina = paginaActual + direccion;
+    
+    if (nuevaPagina >= 1 && nuevaPagina <= totalPaginas) {
+        paginaActual = nuevaPagina;
+        mostrarResultados();
+    }
+}
+
+function actualizarPaginacion() {
+    const totalPaginas = Math.ceil(resultadosActuales.length / resultadosPorPagina);
+    document.getElementById('pagina-actual').textContent = 
+        `Página ${paginaActual} de ${totalPaginas}`;
+    
+    document.getElementById('anterior').disabled = paginaActual === 1;
+    document.getElementById('siguiente').disabled = paginaActual === totalPaginas;
 }

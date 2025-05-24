@@ -273,3 +273,58 @@ h2 {
     color: #ddd;
     font-size: 0.95rem;
 }
+
+.filtros-container {
+    background: var(--bg-card);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem auto;
+    max-width: 1200px;
+}
+
+.filtro-grupo {
+    margin-bottom: 1rem;
+}
+
+.filtro-grupo label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ddd;
+}
+
+.botones-filtro {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+#tabla-resultados {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+    background: var(--bg-card);
+}
+
+#tabla-resultados th,
+#tabla-resultados td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#tabla-resultados th {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tabla-imagen {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+#total-resultados {
+    margin: 1rem 0;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
