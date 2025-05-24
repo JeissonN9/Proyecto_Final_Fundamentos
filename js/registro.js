@@ -34,7 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validar todos los campos
         const errores = validarCampos();
         if (errores.length > 0) {
-            alert('Por favor revise los siguientes campos: ' + errores.join(', '));
+            alert('Los siguientes campos son inválidos: ' + errores.join(', ') + 
+                  '\nSerás redirigido a la página de indicaciones.');
+            setTimeout(() => {
+                window.location.href = 'indicaciones.html';
+            }, 1500);
             return;
         }
 
@@ -53,7 +57,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Verificar si el código ya existe
             const productos = JSON.parse(localStorage.getItem('productos')) || [];
             if (productos.some(p => p.codigo === nuevoProducto.codigo)) {
-                alert('Ya existe un producto con ese código');
+                alert('Ya existe un producto con ese código.\nSerás redirigido a la página de indicaciones.');
+                setTimeout(() => {
+                    window.location.href = 'indicaciones.html';
+                }, 1500);
                 return;
             }
 
@@ -74,7 +81,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error al guardar el producto:', error);
-            alert('Error al registrar el producto');
+            alert('Error al registrar el producto.\nSerás redirigido a la página de indicaciones.');
+            setTimeout(() => {
+                window.location.href = 'indicaciones.html';
+            }, 1500);
         }
     });
 
@@ -82,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         vistaPrevia.innerHTML = `
             <h3>Producto Registrado:</h3>
             <div class="producto-card">
-                <img src="../../img/${producto.imagen}" alt="${producto.nombre}">
+                <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}">
                 <h3>${producto.nombre}</h3>
                 <p>Categoría: ${producto.categoria}</p>
                 <p>Precio: $${producto.precio.toLocaleString()}</p>
