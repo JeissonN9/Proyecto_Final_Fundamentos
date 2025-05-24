@@ -34,13 +34,14 @@ function mostrarProductos(pagina = 1) {
         const card = document.createElement('div');
         card.className = 'producto-card';
         card.innerHTML = `
-            <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}">
+            <img src="../../img/${producto.imagen}" alt="${producto.nombre}" onerror="this.src='../../img/default.png'">
             <h3>${producto.nombre}</h3>
             <p>Categoría: ${producto.categoria}</p>
             <p>Precio: $${producto.precio.toLocaleString()}</p>
             <p>Marca: ${producto.marca}</p>
             <p>Compatibilidad: ${producto.compatibilidad}</p>
             <p>Código: ${producto.codigo}</p>
+            <button onclick="eliminarProducto('${producto.codigo}')" class="btn-eliminar">Eliminar</button>
         `;
         contenedor.appendChild(card);
     });

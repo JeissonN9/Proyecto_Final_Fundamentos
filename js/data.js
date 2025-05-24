@@ -1,7 +1,6 @@
 // Función para inicializar los productos si no existen
 function inicializarProductos() {
-    // Forzar actualización de productos
-    localStorage.removeItem('productos');
+    // Solo inicializar si no hay productos
     if (!localStorage.getItem('productos')) {
         const productosIniciales = [
             {

@@ -31,41 +31,47 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
-        // Validar código del producto
-        const codigo = document.getElementById('codigo').value;
-        const codigoValido = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d.*\d).{8,}$/.test(codigo);
-
-        if (!codigoValido) {
-            alert('El código del producto no cumple con los requisitos');
-            setTimeout(() => {
-                window.location.href = 'indicaciones.html';
-            }, 1000);
+        // Validar todos los campos
+        const errores = validarCampos();
+        if (errores.length > 0) {
+            alert('Por favor revise los siguientes campos: ' + errores.join(', '));
             return;
         }
 
-        // Si el código es válido, continuar con el registro
+        // Crear objeto del nuevo producto
         const nuevoProducto = {
-            nombre: document.getElementById('nombre').value,
-            categoria: document.getElementById('categoria').value,
-            imagen: document.getElementById('imagen').value,
-            codigo: document.getElementById('codigo').value,
+            nombre: document.getElementById('nombre').value.trim(),
+            categoria: document.getElementById('categoria').value.trim(),
+            imagen: document.getElementById('imagen').value.trim(),
+            codigo: document.getElementById('codigo').value.trim(),
             precio: parseInt(document.getElementById('precio').value),
-            marca: document.getElementById('marca').value,
-            compatibilidad: document.getElementById('compatibilidad').value
+            marca: document.getElementById('marca').value.trim(),
+            compatibilidad: document.getElementById('compatibilidad').value.trim()
         };
 
         try {
-            const productosActuales = JSON.parse(localStorage.getItem('productos')) || [];
-            productosActuales.push(nuevoProducto);
-            localStorage.setItem('productos', JSON.stringify(productosActuales));
+            // Verificar si el código ya existe
+            const productos = JSON.parse(localStorage.getItem('productos')) || [];
+            if (productos.some(p => p.codigo === nuevoProducto.codigo)) {
+                alert('Ya existe un producto con ese código');
+                return;
+            }
+
+            // Agregar el nuevo producto
+            productos.push(nuevoProducto);
+            localStorage.setItem('productos', JSON.stringify(productos));
 
             // Mostrar el producto registrado
             mostrarProductoRegistrado(nuevoProducto);
             
-            // Esperar 2 segundos y redirigir a la lista de productos
+            // Limpiar el formulario
+            form.reset();
+
+            // Redirigir después de 2 segundos
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 2000);
+
         } catch (error) {
             console.error('Error al guardar el producto:', error);
             alert('Error al registrar el producto');
