@@ -1,28 +1,13 @@
-document.getElementById('buscar').addEventListener('click', () => {
+document.getElementById('buscar').addEventListener('click', async () => {
     const resultadosDiv = document.getElementById('resultados-busqueda');
     resultadosDiv.innerHTML = '<p>Buscando...</p>';
 
-    setTimeout(() => {
-        // Realizar la búsqueda
-        const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
-        const categoria = document.getElementById('filtro-categoria').value;
-        const precioMax = document.getElementById('filtro-precio').value;
-        const marca = document.getElementById('filtro-marca').value.toLowerCase();
-        
-        const productos = obtenerProductos();
-        resultadosActuales = productos.filter(producto => {
-            return (!nombre || producto.nombre.toLowerCase().includes(nombre)) &&
-                   (!categoria || producto.categoria === categoria) &&
-                   (!precioMax || producto.precio <= parseFloat(precioMax)) &&
-                   (!marca || producto.marca.toLowerCase().includes(marca));
-        });
-        
-        document.getElementById('total-resultados').textContent = 
-            `Se encontraron ${resultadosActuales.length} productos`;
-        
-        paginaActual = 1;
-        mostrarResultados();
-    }, 2000);
+    try {
+        await buscarProductos();
+    } catch (error) {
+        resultadosDiv.innerHTML = '<p>Error al realizar la búsqueda</p>';
+        console.error('Error:', error);
+    }
 });
 
 let paginaActual = 1;
@@ -40,25 +25,38 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('siguiente').addEventListener('click', () => cambiarPagina(1));
 });
 
-function realizarBusqueda() {
-    const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
-    const categoria = document.getElementById('filtro-categoria').value;
-    const precioMax = document.getElementById('filtro-precio').value;
-    const marca = document.getElementById('filtro-marca').value.toLowerCase();
-    
-    const productos = obtenerProductos();
-    resultadosActuales = productos.filter(producto => {
-        return (!nombre || producto.nombre.toLowerCase().includes(nombre)) &&
-               (!categoria || producto.categoria === categoria) &&
-               (!precioMax || producto.precio <= parseFloat(precioMax)) &&
-               (!marca || producto.marca.toLowerCase().includes(marca));
+function buscarProductos() {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
+            const categoria = document.getElementById('filtro-categoria').value;
+            const precioMax = document.getElementById('filtro-precio').value;
+            const marca = document.getElementById('filtro-marca').value.toLowerCase();
+            
+            const productos = obtenerProductos();
+            resultadosActuales = productos.filter(producto => {
+                return (!nombre || producto.nombre.toLowerCase().includes(nombre)) &&
+                       (!categoria || producto.categoria === categoria) &&
+                       (!precioMax || producto.precio <= parseFloat(precioMax)) &&
+                       (!marca || producto.marca.toLowerCase().includes(marca));
+            });
+            
+            document.getElementById('total-resultados').textContent = 
+                `Se encontraron ${resultadosActuales.length} productos`;
+            
+            paginaActual = 1;
+            mostrarResultados();
+            resolve();
+        }, 2000);
     });
-    
-    document.getElementById('total-resultados').textContent = 
-        `Se encontraron ${resultadosActuales.length} productos`;
-    
-    paginaActual = 1;
-    mostrarResultados();
+}
+
+async function realizarBusqueda() {
+    try {
+        await buscarProductos();
+    } catch (error) {
+        console.error('Error al realizar la búsqueda:', error);
+    }
 }
 
 function mostrarResultados() {
