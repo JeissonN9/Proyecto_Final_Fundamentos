@@ -328,3 +328,17 @@ h2 {
     font-size: 1.1rem;
     color: var(--primary-color);
 }
+
+.btn-eliminar {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-eliminar:hover {
+    background-color: #cc0000;
+}

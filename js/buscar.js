@@ -18,22 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnBuscar = document.getElementById('buscar');
     const btnLimpiar = document.getElementById('limpiar-filtros');
     
-    btnBuscar.addEventListener('click', realizarBusqueda);
-    btnLimpiar.addEventListener('click', limpiarFiltros);
-    
-    document.getElementById('anterior').addEventListener('click', () => cambiarPagina(-1));
-    document.getElementById('siguiente').addEventListener('click', () => cambiarPagina(1));
-});
-
-function buscarProductos() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
-            const categoria = document.getElementById('filtro-categoria').value;
-            const precioMax = document.getElementById('filtro-precio').value;
-            const marca = document.getElementById('filtro-marca').value.toLowerCase();
-            
-            const productos = obtenerProductos();
+    // Event listener para el botón de búsqueda
+    btnBuscar.addEventListener('click', async () => {
+        const nombre = document.getElementById('filtro-nombre').value.toLowerCase();
+        const categoria = document.getElementById('filtro-categoria').value;
+        const precioMax = document.getElementById('filtro-precio').value;
+        const marca = document.getElementById('filtro-marca').value.toLowerCase();
+        
+        try {
+            const productos = await obtenerProductos();
             resultadosActuales = productos.filter(producto => {
                 return (!nombre || producto.nombre.toLowerCase().includes(nombre)) &&
                        (!categoria || producto.categoria === categoria) &&
@@ -46,18 +39,52 @@ function buscarProductos() {
             
             paginaActual = 1;
             mostrarResultados();
-            resolve();
-        }, 2000);
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('total-resultados').textContent = 'Error al buscar productos';
+        }
     });
-}
+    
+    // Event listener para el botón limpiar
+    btnLimpiar.addEventListener('click', async () => {
+        // Limpiar campos
+        document.getElementById('filtro-nombre').value = '';
+        document.getElementById('filtro-categoria').value = '';
+        document.getElementById('filtro-precio').value = '';
+        document.getElementById('filtro-marca').value = '';
+        
+        try {
+            // Recargar todos los productos
+            const productos = await obtenerProductos();
+            resultadosActuales = productos;
+            
+            // Actualizar vista
+            document.getElementById('total-resultados').textContent = 
+                `Se encontraron ${resultadosActuales.length} productos`;
+            paginaActual = 1;
+            mostrarResultados();
+        } catch (error) {
+            console.error('Error al limpiar filtros:', error);
+            document.getElementById('total-resultados').textContent = 'Error al cargar productos';
+        }
+    });
+    
+    // Event listeners para paginación
+    document.getElementById('anterior').addEventListener('click', () => {
+        if (paginaActual > 1) {
+            paginaActual--;
+            mostrarResultados();
+        }
+    });
 
-async function realizarBusqueda() {
-    try {
-        await buscarProductos();
-    } catch (error) {
-        console.error('Error al realizar la búsqueda:', error);
-    }
-}
+    document.getElementById('siguiente').addEventListener('click', () => {
+        const totalPaginas = Math.ceil(resultadosActuales.length / resultadosPorPagina);
+        if (paginaActual < totalPaginas) {
+            paginaActual++;
+            mostrarResultados();
+        }
+    });
+});
 
 function mostrarResultados() {
     const inicio = (paginaActual - 1) * resultadosPorPagina;
@@ -76,20 +103,36 @@ function mostrarResultados() {
             <td>$${producto.precio.toLocaleString()}</td>
             <td>${producto.marca}</td>
             <td>${producto.compatibilidad}</td>
+            <td>
+                <button class="btn-eliminar" data-codigo="${producto.codigo}">
+                    Eliminar
+                </button>
+            </td>
         `;
+        
+        // Añadir event listener para el botón eliminar
+        const btnEliminar = tr.querySelector('.btn-eliminar');
+        btnEliminar.addEventListener('click', async () => {
+            if (confirm('¿Está seguro de eliminar este producto?')) {
+                try {
+                    await eliminarProducto(producto.codigo);
+                    // Actualizar resultados después de eliminar
+                    const productos = await obtenerProductos();
+                    resultadosActuales = productos;
+                    mostrarResultados();
+                    document.getElementById('total-resultados').textContent = 
+                        `Se encontraron ${resultadosActuales.length} productos`;
+                } catch (error) {
+                    console.error('Error al eliminar:', error);
+                    alert('Error al eliminar el producto');
+                }
+            }
+        });
+        
         tbody.appendChild(tr);
     });
     
     actualizarPaginacion();
-}
-
-function limpiarFiltros() {
-    document.getElementById('filtro-nombre').value = '';
-    document.getElementById('filtro-categoria').value = '';
-    document.getElementById('filtro-precio').value = '';
-    document.getElementById('filtro-marca').value = '';
-    document.getElementById('total-resultados').textContent = '';
-    document.querySelector('#tabla-resultados tbody').innerHTML = '';
 }
 
 function cambiarPagina(direccion) {
@@ -107,6 +150,6 @@ function actualizarPaginacion() {
     document.getElementById('pagina-actual').textContent = 
         `Página ${paginaActual} de ${totalPaginas}`;
     
-    document.getElementById('anterior').disabled = paginaActual === 1;
-    document.getElementById('siguiente').disabled = paginaActual === totalPaginas;
+    document.getElementById('anterior').disabled = paginaActual <= 1;
+    document.getElementById('siguiente').disabled = paginaActual >= totalPaginas;
 }

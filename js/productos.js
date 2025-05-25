@@ -8,29 +8,36 @@ async function mostrarProductos(pagina = 1) {
         const productos = await obtenerProductos();
         const totalPaginas = Math.ceil(productos.length / productosPorPagina);
         
-        document.getElementById('pagina-actual').textContent = `Página ${pagina} de ${totalPaginas}`;
+        // Validar límites de página
+        if (pagina < 1) pagina = 1;
+        if (pagina > totalPaginas) pagina = totalPaginas;
+        
+        // Actualizar estado de la página
+        paginaActual = pagina;
+        
+        // Actualizar información de paginación
+        document.getElementById('pagina-actual').textContent = 
+            `Página ${pagina} de ${totalPaginas}`;
         
         const inicio = (pagina - 1) * productosPorPagina;
         const fin = inicio + productosPorPagina;
         const productosAPintar = productos.slice(inicio, fin);
         
-        await renderizarProductos(productosAPintar);
-        actualizarBotonesPaginacion(pagina, totalPaginas);
-    } catch (error) {
-        console.error('Error al mostrar productos:', error);
-    }
-}
-
-function renderizarProductos(productos) {
-    return new Promise((resolve) => {
+        // Actualizar botones de paginación
+        document.getElementById('anterior').disabled = pagina <= 1;
+        document.getElementById('siguiente').disabled = pagina >= totalPaginas;
+        
+        // Renderizar productos
         const contenedor = document.getElementById('productos-lista');
         contenedor.innerHTML = '';
         
-        productos.forEach(producto => {
+        productosAPintar.forEach(producto => {
             const card = document.createElement('div');
             card.className = 'producto-card';
             card.innerHTML = `
-                <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}" onerror="this.src='../assets/img/default.png'">
+                <img src="../assets/img/${producto.imagen}" 
+                     alt="${producto.nombre}" 
+                     onerror="this.src='../assets/img/default.png'">
                 <h3>${producto.nombre}</h3>
                 <p>Categoría: ${producto.categoria}</p>
                 <p>Precio: $${producto.precio.toLocaleString()}</p>
@@ -41,26 +48,37 @@ function renderizarProductos(productos) {
             contenedor.appendChild(card);
         });
         
-        resolve();
-    });
+    } catch (error) {
+        console.error('Error al mostrar productos:', error);
+        throw error;
+    }
 }
 
 // Event listeners para paginación
-document.getElementById('anterior').addEventListener('click', () => {
-    if (paginaActual > 1) {
-        paginaActual--;
-        mostrarProductos(paginaActual);
-        window.scrollTo(0, 0); // Volver al inicio de la página
-    }
-});
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        await mostrarProductos(paginaActual);
+        
+        document.getElementById('anterior').addEventListener('click', async () => {
+            if (paginaActual > 1) {
+                paginaActual--;
+                await mostrarProductos(paginaActual);
+            }
+        });
 
-document.getElementById('siguiente').addEventListener('click', () => {
-    const productos = obtenerProductos();
-    const totalPaginas = Math.ceil(productos.length / productosPorPagina);
-    if (paginaActual < totalPaginas) {
-        paginaActual++;
-        mostrarProductos(paginaActual);
-        window.scrollTo(0, 0); // Volver al inicio de la página
+        document.getElementById('siguiente').addEventListener('click', async () => {
+            const productos = await obtenerProductos();
+            const totalPaginas = Math.ceil(productos.length / productosPorPagina);
+            
+            if (paginaActual < totalPaginas) {
+                paginaActual++;
+                await mostrarProductos(paginaActual);
+            }
+        });
+    } catch (error) {
+        console.error('Error al inicializar la página:', error);
+        document.getElementById('productos-lista').innerHTML = 
+            '<p>Error al cargar los productos. Por favor, intente más tarde.</p>';
     }
 });
 

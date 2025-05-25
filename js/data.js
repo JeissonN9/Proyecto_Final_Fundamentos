@@ -96,7 +96,7 @@ function inicializarProductos() {
             {
                 "nombre": "Filtro de aire",
                 "categoria": "Lubricacion",
-                "imagen": "filtro_aire.png",
+                "imagen": "filtro_aire.png",  // Esta bien definida
                 "codigo": "PQr51l936",
                 "precio": 296784,
                 "marca": "Toyota filter",
@@ -526,6 +526,26 @@ function agregarProducto(producto) {
             resolve(producto);
         } catch (error) {
             reject(new Error('Error al agregar producto: ' + error.message));
+        }
+    });
+}
+
+// Función para eliminar un producto por código
+function eliminarProducto(codigo) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const productos = await obtenerProductos();
+            const productosFiltrados = productos.filter(p => p.codigo !== codigo);
+            
+            if (productos.length === productosFiltrados.length) {
+                reject(new Error('No se encontró el producto con el código especificado'));
+                return;
+            }
+
+            localStorage.setItem('productos', JSON.stringify(productosFiltrados));
+            resolve(true);
+        } catch (error) {
+            reject(new Error('Error al eliminar producto: ' + error.message));
         }
     });
 }
