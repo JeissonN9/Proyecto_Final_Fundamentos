@@ -8,20 +8,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function validarCampos() {
         const validaciones = {
-            nombre: value => value.length > 0 && value.length <= 20,
-            categoria: value => value.length > 0,
-            imagen: value => value.length > 0,
-            codigo: value => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d.*\d).{8,}$/.test(value),
-            precio: value => !isNaN(value) && parseInt(value) > 0,
-            marca: value => value.length > 0,
-            compatibilidad: value => value.length > 0
+            nombre: {
+                validator: value => value.length > 0 && value.length <= 20,
+                message: 'El nombre debe tener entre 1 y 20 caracteres'
+            },
+            categoria: {
+                validator: value => value.length > 0,
+                message: 'Debe seleccionar una categoría'
+            },
+            imagen: {
+                validator: value => value.length > 0,
+                message: 'Debe seleccionar una imagen'
+            },
+            codigo: {
+                validator: value => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d.*\d).{8,}$/.test(value),
+                message: 'El código debe tener al menos 8 caracteres, una minúscula, una mayúscula y dos números'
+            },
+            precio: {
+                validator: value => !isNaN(value) && parseInt(value) > 0,
+                message: 'El precio debe ser un número positivo'
+            },
+            marca: {
+                validator: value => value.length > 0,
+                message: 'La marca es requerida'
+            },
+            compatibilidad: {
+                validator: value => value.length > 0,
+                message: 'La compatibilidad es requerida'
+            }
         };
 
         let errores = [];
-        for (const [campo, validador] of Object.entries(validaciones)) {
+        for (const [campo, config] of Object.entries(validaciones)) {
             const elemento = document.getElementById(campo);
-            if (!validador(elemento.value.trim())) {
-                errores.push(campo);
+            if (!config.validator(elemento.value.trim())) {
+                errores.push(`${campo}: ${config.message}`);
             }
         }
 
@@ -34,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Validar todos los campos
         const errores = validarCampos();
         if (errores.length > 0) {
-            alert('Los siguientes campos son inválidos: ' + errores.join(', '));
+            alert('Errores de validación:\n' + errores.join('\n'));
+            window.location.href = 'indicaciones.html';
             return;
         }
 
@@ -52,8 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Verificar si el código ya existe
             const productos = await obtenerProductos();
-            if (productos.some(p => p.codigo === nuevoProducto.codigo)) {
-                throw new Error('Ya existe un producto con ese código');
+            const codigo = document.getElementById('codigo').value.trim();
+            
+            if (productos.some(p => p.codigo === codigo)) {
+                alert('Error: Ya existe un producto con ese código');
+                window.location.href = 'indicaciones.html';
+                return;
             }
 
             // Agregar el nuevo producto
@@ -68,10 +94,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error:', error);
-            alert(error.message + '\nSerás redirigido a la página de indicaciones.');
-            setTimeout(() => {
-                window.location.href = 'indicaciones.html';
-            }, 1500);
+            alert('Error al registrar el producto');
+            window.location.href = 'indicaciones.html';
         }
     });
 
