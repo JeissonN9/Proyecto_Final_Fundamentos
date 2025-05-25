@@ -504,16 +504,30 @@ function inicializarProductos() {
     }
 }
 
-// Función auxiliar para obtener productos
+// Modificar la función para obtener productos usando Promise
 function obtenerProductos() {
-    return JSON.parse(localStorage.getItem('productos')) || [];
+    return new Promise((resolve, reject) => {
+        try {
+            const productos = JSON.parse(localStorage.getItem('productos')) || [];
+            resolve(productos);
+        } catch (error) {
+            reject(new Error('Error al obtener productos: ' + error.message));
+        }
+    });
 }
 
-// Función para agregar un nuevo producto
+// Modificar la función para agregar productos usando Promise
 function agregarProducto(producto) {
-    const productos = obtenerProductos();
-    productos.push(producto);
-    localStorage.setItem('productos', JSON.stringify(productos));
+    return new Promise(async (resolve, reject) => {
+        try {
+            const productos = await obtenerProductos();
+            productos.push(producto);
+            localStorage.setItem('productos', JSON.stringify(productos));
+            resolve(producto);
+        } catch (error) {
+            reject(new Error('Error al agregar producto: ' + error.message));
+        }
+    });
 }
 
 // Inicializar productos al cargar el script

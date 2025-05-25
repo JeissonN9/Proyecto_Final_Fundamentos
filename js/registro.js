@@ -28,17 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
         return errores;
     }
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         // Validar todos los campos
         const errores = validarCampos();
         if (errores.length > 0) {
-            alert('Los siguientes campos son inválidos: ' + errores.join(', ') + 
-                  '\nSerás redirigido a la página de indicaciones.');
-            setTimeout(() => {
-                window.location.href = 'indicaciones.html';
-            }, 1500);
+            alert('Los siguientes campos son inválidos: ' + errores.join(', '));
             return;
         }
 
@@ -55,33 +51,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Verificar si el código ya existe
-            const productos = JSON.parse(localStorage.getItem('productos')) || [];
+            const productos = await obtenerProductos();
             if (productos.some(p => p.codigo === nuevoProducto.codigo)) {
-                alert('Ya existe un producto con ese código.\nSerás redirigido a la página de indicaciones.');
-                setTimeout(() => {
-                    window.location.href = 'indicaciones.html';
-                }, 1500);
-                return;
+                throw new Error('Ya existe un producto con ese código');
             }
 
             // Agregar el nuevo producto
-            productos.push(nuevoProducto);
-            localStorage.setItem('productos', JSON.stringify(productos));
-
-            // Mostrar el producto registrado
-            mostrarProductoRegistrado(nuevoProducto);
-            
+            await agregarProducto(nuevoProducto);
+            await mostrarProductoRegistrado(nuevoProducto);
             // Limpiar el formulario
             form.reset();
 
             // Redirigir después de 2 segundos
-            setTimeout(() => {
-                window.location.href = 'index.html';
-            }, 2000);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            window.location.href = 'index.html';
 
         } catch (error) {
-            console.error('Error al guardar el producto:', error);
-            alert('Error al registrar el producto.\nSerás redirigido a la página de indicaciones.');
+            console.error('Error:', error);
+            alert(error.message + '\nSerás redirigido a la página de indicaciones.');
             setTimeout(() => {
                 window.location.href = 'indicaciones.html';
             }, 1500);
@@ -89,17 +76,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function mostrarProductoRegistrado(producto) {
-        vistaPrevia.innerHTML = `
-            <h3>Producto Registrado:</h3>
-            <div class="producto-card">
-                <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}">
-                <h3>${producto.nombre}</h3>
-                <p>Categoría: ${producto.categoria}</p>
-                <p>Precio: $${producto.precio.toLocaleString()}</p>
-                <p>Marca: ${producto.marca}</p>
-                <p>Compatibilidad: ${producto.compatibilidad}</p>
-                <p>Código: ${producto.codigo}</p>
-            </div>
-        `;
+        return new Promise((resolve) => {
+            vistaPrevia.innerHTML = `
+                <h3>Producto Registrado:</h3>
+                <div class="producto-card">
+                    <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}">
+                    <h3>${producto.nombre}</h3>
+                    <p>Categoría: ${producto.categoria}</p>
+                    <p>Precio: $${producto.precio.toLocaleString()}</p>
+                    <p>Marca: ${producto.marca}</p>
+                    <p>Compatibilidad: ${producto.compatibilidad}</p>
+                    <p>Código: ${producto.codigo}</p>
+                </div>
+            `;
+            resolve();
+        });
     }
 });

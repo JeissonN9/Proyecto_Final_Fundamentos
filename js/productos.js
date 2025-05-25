@@ -3,42 +3,46 @@ let paginaActual = 1;
 const productosPorPagina = 15;
 
 // Función para mostrar los productos
-function mostrarProductos(pagina = 1) {
-    const productos = obtenerProductos();
-    const contenedor = document.getElementById('productos-lista');
-    const totalPaginas = Math.ceil(productos.length / productosPorPagina);
-    
-    // Actualizar número de página visible
-    const paginaInfo = document.getElementById('pagina-actual');
-    paginaInfo.textContent = `Página ${pagina} de ${totalPaginas}`;
-    
-    // Calcular productos para esta página
-    const inicio = (pagina - 1) * productosPorPagina;
-    const fin = inicio + productosPorPagina;
-    const productosAPintar = productos.slice(inicio, fin);
-    
-    // Limpiar contenedor
-    contenedor.innerHTML = '';
-    
-    // Mostrar productos
-    productosAPintar.forEach(producto => {
-        const card = document.createElement('div');
-        card.className = 'producto-card';
-        card.innerHTML = `
-            <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}" onerror="this.src='../assets/img/default.png'">
-            <h3>${producto.nombre}</h3>
-            <p>Categoría: ${producto.categoria}</p>
-            <p>Precio: $${producto.precio.toLocaleString()}</p>
-            <p>Marca: ${producto.marca}</p>
-            <p>Compatibilidad: ${producto.compatibilidad}</p>
-            <p>Código: ${producto.codigo}</p>
-        `;
-        contenedor.appendChild(card);
-    });
+async function mostrarProductos(pagina = 1) {
+    try {
+        const productos = await obtenerProductos();
+        const totalPaginas = Math.ceil(productos.length / productosPorPagina);
+        
+        document.getElementById('pagina-actual').textContent = `Página ${pagina} de ${totalPaginas}`;
+        
+        const inicio = (pagina - 1) * productosPorPagina;
+        const fin = inicio + productosPorPagina;
+        const productosAPintar = productos.slice(inicio, fin);
+        
+        await renderizarProductos(productosAPintar);
+        actualizarBotonesPaginacion(pagina, totalPaginas);
+    } catch (error) {
+        console.error('Error al mostrar productos:', error);
+    }
+}
 
-    // Actualizar estado de botones
-    document.getElementById('anterior').disabled = pagina === 1;
-    document.getElementById('siguiente').disabled = pagina === totalPaginas;
+function renderizarProductos(productos) {
+    return new Promise((resolve) => {
+        const contenedor = document.getElementById('productos-lista');
+        contenedor.innerHTML = '';
+        
+        productos.forEach(producto => {
+            const card = document.createElement('div');
+            card.className = 'producto-card';
+            card.innerHTML = `
+                <img src="../assets/img/${producto.imagen}" alt="${producto.nombre}" onerror="this.src='../assets/img/default.png'">
+                <h3>${producto.nombre}</h3>
+                <p>Categoría: ${producto.categoria}</p>
+                <p>Precio: $${producto.precio.toLocaleString()}</p>
+                <p>Marca: ${producto.marca}</p>
+                <p>Compatibilidad: ${producto.compatibilidad}</p>
+                <p>Código: ${producto.codigo}</p>
+            `;
+            contenedor.appendChild(card);
+        });
+        
+        resolve();
+    });
 }
 
 // Event listeners para paginación
